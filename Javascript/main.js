@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.operations = [];
             this.on = true;
             this.operationCharacters = ["-","+","/","*", "!", "√"];
+            this.screen = document.querySelector('.calculator__screen');
         }
 
         clearScreen()
@@ -118,7 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 this.clearScreen();
                 this.displayScreen();
+                if(this.screen) this.screen.style.backgroundColor = "#859899";
             }
+            else if(this.screen) this.screen.style.backgroundColor = "#cadfe0";
         }
     };
 
