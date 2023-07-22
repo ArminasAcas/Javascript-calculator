@@ -68,6 +68,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.numbers[i] = Math.sqrt(this.numbers[i]);
                     this.operations.splice(i,1);
                 }
+                if (this.operations[i] === "!") 
+                {
+                    let result = 1;
+                    for(let u = this.numbers[i]; u > 1; u--) result *= u; 
+                    this.numbers[i] = result;
+                    this.operations.splice(i,1);
+                }
                 else i++;
             };
 
