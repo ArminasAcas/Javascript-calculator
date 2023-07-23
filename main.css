@@ -7,6 +7,7 @@
     border-radius: 5%;
     background-color: #e4e5eb;
     box-shadow: 7px 7px 26px #2a2a2b;
+    word-break: break-all;
 }
 
 .calculator_container {

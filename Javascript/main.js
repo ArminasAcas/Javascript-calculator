@@ -1,149 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
-    class Calculator {
-
-        constructor(){
-            this.displayText = "";
-            this.numbers = [];
-            this.operations = [];
-            this.on = true;
-            this.operationCharacters = ["-","+","/","*", "!", "√"];
-            this.screen = document.querySelector('.calculator__screen');
-        }
-
-        clearScreen()
-        {
-            this.displayText = "";
-            this.numbers = []; 
-            this.operations = [];       
-        }
-
-        addNumber(number)
-        {
-            if (this.on)
-            {
-                if (this.numbers.length <= 0)
-                {
-                    this.numbers.push(number);
-                    this.displayText += number;
-                    return;
-                }
-                
-                if (this.operationCharacters.includes(this.displayText[this.displayText.length-1]))
-                {
-                    this.numbers.push(number);
-                    this.displayText += number;
-                    return;
-                }
-                
-                this.numbers[this.numbers.length-1] += number;
-                this.displayText += number;
-            }
-
-        }
-
-        addOperation(operation)
-        {
-            if (this.on)
-            {
-                this.displayText += operation;
-                this.operations.push(operation);
-            }
-            
-        }
-
-        displayScreen()
-        {
-            displayText.innerHTML = this.displayText;
-        }
-
-        calculateResult()
-        {
-            this.numbers = this.numbers.map(Number);
-        
-            let i = 0;
-            while (i <= this.operations.length)
-            {
-                if (this.operations[i] === "√") 
-                {
-                    this.numbers[i] = Math.sqrt(this.numbers[i]);
-                    this.operations.splice(i,1);
-                }
-                if (this.operations[i] === "!") 
-                {
-                    let result = 1;
-                    for(let u = this.numbers[i]; u > 1; u--) result *= u; 
-                    this.numbers[i] = result;
-                    this.operations.splice(i,1);
-                }
-                else i++;
-            };
-
-            i = 0;
-            while (i <= this.operations.length)
-            {
-                if (this.operations[i] === "*") 
-                {
-                    this.numbers[i] = this.numbers[i] * this.numbers[i+1];
-                    this.numbers.splice(i+1,1);
-                    this.operations.splice(i,1);
-                }
-                else if (this.operations[i] === "/") 
-                {
-                    this.numbers[i] = this.numbers[i] / this.numbers[i+1];
-                    this.numbers.splice(i+1,1);
-                    this.operations.splice(i,1);
-                }
-                else i++;
-            };
-
-            i = 0;
-            while (i <= this.operations.length)
-            {
-                if (this.operations[i] === "+") 
-                {
-                    this.numbers[i] = this.numbers[i] + this.numbers[i+1];
-                    this.numbers.splice(i+1,1);
-                    this.operations.splice(i,1);
-                }
-                else if (this.operations[i] === "-") 
-                {
-                    this.numbers[i] = this.numbers[i] - this.numbers[i+1];
-                    this.numbers.splice(i+1,1);
-                    this.operations.splice(i,1);
-                }
-                else i++;
-            };
-        
-
-            if (!Number.isInteger(this.numbers[0])) this.displayText = String(this.numbers[0].toFixed(2));
-            else this.displayText = String(this.numbers[0]);
-        }
-
-        changeDeviceState()
-        {
-            this.on = !this.on
-            if(!this.on)
-            {
-                this.clearScreen();
-                this.displayScreen();
-                if(this.screen) this.screen.style.backgroundColor = "#859899";
-            }
-            else if(this.screen) this.screen.style.backgroundColor = "#cadfe0";
-        }
-    };
-
-    const numberButtons = document.querySelectorAll('[data-number]');
-    const operationButtons = document.querySelectorAll('[data-operation]');
-    const onButton = document.querySelector('[data-on]');
-    const clearButton = document.querySelector('[data-clear]');
-    const equalButton = document.querySelector('[data-equal]');
-    const displayText = document.querySelector('[data-display]');
-
+    let buttons = {
+        numberButtons: document.querySelectorAll('[data-number]'),
+        operationButtons: document.querySelectorAll('[data-operation]'),
+        onButton: document.querySelector('[data-on]'),
+        clearButton: document.querySelector('[data-clear]'),
+        equalButton: document.querySelector('[data-equal]')
+    }
+    
     let calculator = new Calculator();
 
-    if (numberButtons)
+    if(!buttons || !calculator) return;
+
+    if (buttons.numberButtons)
     {
-        numberButtons.forEach(button => {
+        buttons.numberButtons.forEach(button => {
             button.addEventListener('click', () => 
             {
                 calculator.addNumber(button.innerHTML);
@@ -152,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    if (operationButtons)
+    if (buttons.operationButtons)
     {
-        operationButtons.forEach(button => {
+        buttons.operationButtons.forEach(button => {
             button.addEventListener('click', () => 
             {
                 calculator.addOperation(button.innerHTML);
@@ -163,26 +33,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    if (clearButton)
+    if (buttons.clearButton)
     {
-        clearButton.addEventListener('click', () => 
+        buttons.clearButton.addEventListener('click', () => 
         {
             calculator.clearScreen();
             calculator.displayScreen();
         })
     }
 
-    if (onButton)
+    if (buttons.onButton)
     {
-        onButton.addEventListener('click', () => 
+        buttons.onButton.addEventListener('click', () => 
         {
             calculator.changeDeviceState();
         })
     }
 
-    if (equalButton)
+    if (buttons.equalButton)
     {
-        equalButton.addEventListener('click', () => 
+        buttons.equalButton.addEventListener('click', () => 
         {
             calculator.calculateResult();
             calculator.displayScreen();
